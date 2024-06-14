@@ -97,6 +97,8 @@ class Window(QMainWindow):
         self.setGeometry(50,100,self.width, self.height)
         
         self.tabWidget()
+        self.widgets()
+        self.layouts()
         self.show()
     
     def tabWidget(self):
@@ -147,7 +149,7 @@ class Window(QMainWindow):
         # tab1 right middle
 
         self.outputImage = QLabel(self)
-        self.outputImage.setPixmap(QPixmap(""))
+        self.outputImage.setPixmap(QPixmap("bluee.png"))
 
         self.outputLabel = QLabel("", self)
         self.outputLabel.setAlignment(Qt.AlignCenter)
@@ -183,6 +185,79 @@ class Window(QMainWindow):
         val = self.noiseSlider.value()
         self.noiseText.setText("Add Noise: % " + str(val))
 
+    def layouts(self):
+
+        self.mainLayout = QHBoxLayout()
+        self.leftLayout = QFormLayout()
+        self.leftMiddleLayout = QFormLayout()
+        self.rightMiddleLayout = QFormLayout()
+        self.rightLayout = QFormLayout()
+
+        # Left
+
+        self.leftLayoutGroupbox = QGroupBox("Input Image")
+        self.leftLayout.addRow(self.drawCanvas)
+        self.leftLayout.addRow(self.openCanvas)
+        self.leftLayout.addRow(self.inputImage)
+        self.leftLayout.addRow(self.searchText)
+        self.leftLayout.addRow(self.searchText)
+        self.leftLayoutGroupbox.setLayout(self.leftLayout)
+
+        # left middle
+
+        
+        self.leftMiddleLayoutGroupbox = QGroupBox("Settings")
+        self.leftMiddleLayout.addRow(self.methodSelection)
+        self.leftMiddleLayout.addRow(self.noiseText)
+        self.leftMiddleLayout.addRow(self.noiseSlider)
+        self.leftMiddleLayout.addRow(self.remember)
+        self.leftMiddleLayout.addRow(self.predict)
+        self.leftMiddleLayoutGroupbox.setLayout(self.leftMiddleLayout)
+
+        # right middle
+
+        self.rightMiddleLayoutGroupBox = QGroupBox("Output")
+        self.leftMiddleLayout.addRow(self.outputImage)
+        self.leftMiddleLayout.addRow(self.outputLabel)
+        self.rightMiddleLayoutGroupBox.setLayout(self.rightMiddleLayout)
+
+        # right
+
+        self.rightLayoutGroupBox = QGroupBox("Result")
+        self.rightLayout.addRow(self.resultTable)
+        self.rightLayoutGroupBox.setLayout(self.rightLayout)
+
+        # tab1 main Layout
+
+        self.mainLayout.addWidget(self.leftLayoutGroupbox)
+        self.mainLayout.addWidget(self.leftMiddleLayoutGroupbox)
+        self.mainLayout.addWidget(self.rightMiddleLayoutGroupBox)
+        self.mainLayout.addWidget(self.rightLayoutGroupBox)
+        self.tab1.setLayout(self.mainLayout)
+
+        # tab 2 Layout
+
+        self.tab2Layout = QHBoxLayout()
+        self.tab2Method1Layout = QFormLayout()
+        self.tab2Method2Layout = QFormLayout()
+
+        # tab2 Method1 Layout
+
+        self.tab2Method1LayoutGroupBox = QGroupBox("Method1")
+        self.tab2Method1Layout.addRow(self.parameter_list1)
+        self.tab2Method1LayoutGroupBox.setLayout(self.tab2Method1Layout)
+
+        # tab2 Method2 Layout
+
+        self.tab2Method2LayoutGroupbox = QGroupBox("Method2")
+        self.tab2Method2Layout.addRow(self.parameter_list2)
+        self.tab2Method2LayoutGroupbox.setLayout(self.tab2Method2Layout)
+
+        # tab2 main Layout
+
+        self.tab2Layout.addWidget(self.tab2Method1LayoutGroupBox, 50)
+        self.tab2Layout.addWidget(self.tab2Method2LayoutGroupbox, 50)
+        self.tab2.setLayout(self.tab2Layout)
 
 
 
