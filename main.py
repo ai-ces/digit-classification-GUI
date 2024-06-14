@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QIcon, QPixmap # icon and load image
 from PyQt5.QtCore import Qt
 
+from PyQt5.QtWidgets import QWidget
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg # load image
@@ -74,13 +75,115 @@ for i in range(2):
     model_list.append(model)
     score_list.append(score)
 
-    model.save("model1"+str(i+1)+".h5")
+    model.save("model"+str(i+1)+".h5")
 
 # %%
 
-    model1 = load_model("model11.h5")
-    model1 = load_model("model12.h5")
+    model1 = load_model("model1.h5")
+    model1 = load_model("model2.h5")
 
 # %% GUI
 
-class
+class Window(QMainWindow):
+
+    def __init__(self):
+        super().__init__()
+
+        #main window
+        self.width = 1080
+        self.height = 640
+
+        self.setWindowTitle("Digit Classification")
+        self.setGeometry(50,100,self.width, self.height)
+        
+        self.tabWidget()
+        self.show()
+    
+    def tabWidget(self):
+        self.tabs = QTabWidget()
+        self.setCentralWidget(self.tabs)
+
+        self.tab1 = QWidget()
+        self.tab2 = QWidget()
+
+        self.tabs.addTab(self.tab1, "Classification")
+        self.tabs.addTab(self.tab2, "Parameters")
+
+    def widgets(self):
+        #tab1 left
+        self.drawCanvas = QPushButton("Draw Canvas")
+        self.drawCanvas.clicked.connect(self.drawCanvasFunction)
+
+        self.openCanvas = QPushButton("Open Canvas")
+        self.openCanvas.clicked.connect(self.openCanvasFunction)
+
+        self.inputImage = QLabel(self)
+        self.inputImage.setPixmap(QPixmap("input.png"))
+
+        self.searchText = QLabel("Real Number: ")
+
+        self.searchEntry = QLineEdit()
+        self.searchEntry.setPlaceholderText("Which number do yo write?")
+
+
+        # tab1 left middle
+
+        self.methodSelection = QComboBox(self)
+        self.methodSelection.addItems(["model1","model2"])
+
+        self.noiseText = QLabel("Add Noise: % " + "0")
+        self.noiseSlider = QSlider(Qt.Horizontal)
+        self.noiseSlider.setMinimum(0)
+        self.noiseSlider.setMaximum(100)
+        self.noiseSlider.setTickPosition(QSlider.TicksBelow)
+        self.noiseSlider.setTickInterval(1)
+        self.noiseSlider.valueChanged.connect(self.noiseSliderFunction)
+
+        self.remember = QCheckBox("Save Result", self)
+
+        self.predict = QPushButton("Predict")
+        self.predict.clicked.connect(self.predictionFunction)
+
+        # tab1 right middle
+
+        self.outputImage = QLabel(self)
+        self.outputImage.setPixmap(QPixmap(""))
+
+        self.outputLabel = QLabel("", self)
+        self.outputLabel.setAlignment(Qt.AlignCenter)
+
+        # tab 1 right
+
+        self.resultTable = QTableWidget()
+        self.resultTable.setColumnCount(2)
+        self.resultTable.setRowCount(10)
+        self.resultTable.setHorizontalHeaderItem(0, QTableWidgetItem("Label(Class)"))
+        self.resultTable.setHorizontalHeaderItem(1, QTableWidgetItem("Probability"))
+
+        # tab2 method1
+
+        self.parameter_list1 = QListWidget(self)
+        self.parameter_list1.addItems(["batch_size = 256", "epochs = 5", "img_rows = 28", "img_cols = 28", "Filter # = [16,32,64]", "Activation Function = Relu", "loss = categorucall cross entropy", "optimizer = Adadelta", "metrics = accuracy"])
+
+        # tab2 method2
+
+        self.parameter_list2 = QListWidget(self)
+        self.parameter_list2.addItems(["batch_size = 256", "epochs = 5", "img_rows = 28", "img_cols = 28", "Filter # = [8,16,32]", "Activation Function = Relu", "loss = categorucall cross entropy", "optimizer = Adadelta", "metrics = accuracy"])
+        
+
+
+    def drawCanvasFunction(self):
+        pass
+    def openCanvasFunction(self):
+        pass
+    def predictionFunction(self):
+        pass
+    
+    def noiseSliderFunction(self):
+        val = self.noiseSlider.value()
+        self.noiseText.setText("Add Noise: % " + str(val))
+
+
+
+
+w = Window()
